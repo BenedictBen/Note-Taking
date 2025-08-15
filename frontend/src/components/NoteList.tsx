@@ -9,7 +9,6 @@ interface NoteListProps {
   onAddNote?: () => void;
 }
 
-
 export default function NoteList({ onAddNote }: NoteListProps) {
   const { notes, loading, error, loadNotes, removeNote, editNote } = useNotes();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -74,6 +73,7 @@ export default function NoteList({ onAddNote }: NoteListProps) {
         onClose={() => setIsModalOpen(false)}
         note={editingNote}
         onSubmit={editingNote ? handleEditSubmit : undefined}
+        onAddNote={loadNotes}
       />
     </div>
   );

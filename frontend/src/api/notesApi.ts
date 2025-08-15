@@ -35,8 +35,10 @@ export const fetchNote = async (id: string): Promise<Note> => {
 export const createNote = async (note: Omit<Note, '_id' | 'createdAt' | 'updatedAt'>): Promise<Note> => {
   try {
     const response = await axios.post<Note>(API_BASE, note);
+     console.log('Server response:', response.data);
     toast.success('Note created successfully');
     return response.data;
+     
   } catch (error) {
     return handleApiError(error);
   }

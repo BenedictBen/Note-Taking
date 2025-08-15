@@ -27,11 +27,12 @@ export const useNotes = () => {
     }
   }, []);
 
+
   const addNote = useCallback(async (note: Omit<Note, '_id' | 'createdAt' | 'updatedAt'>) => {
     setLoading(true);
     try {
       const newNote = await createNote(note);
-      setNotes(prev => [...prev, newNote]);
+      setNotes(prev => [...prev, newNote]); 
       return newNote;
     } catch (err) {
       throw err;
