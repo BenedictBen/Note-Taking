@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import type { Note } from '../types/types';
 import toast from 'react-hot-toast';
 

@@ -9,8 +9,8 @@ interface NoteListProps {
   onAddNote?: () => void;
 }
 
-export default function NoteList({ onAddNote }: NoteListProps) {
-  const { notes, loading, error, loadNotes, removeNote, editNote } = useNotes();
+export default function NoteList({  }: NoteListProps) {
+  const { notes, loading, loadNotes, removeNote, editNote } = useNotes();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | null>(null);
 
