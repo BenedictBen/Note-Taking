@@ -54,12 +54,6 @@ export const updateNote = async (id: string, note: Partial<Note>): Promise<Note>
   }
 };
 
-/*************  ✨ Windsurf Command ⭐  *************/
-/**
- * Deletes a note from the server by its ID.
- * 
- * @param {string} id - The ID of the note to delete.
-/*******  498639a4-e177-4e5a-b9ea-6d3a4c9f8d8b  *******/
 export const deleteNote = async (id: string): Promise<void> => {
   try {
     await axios.delete(`${API_BASE}/${id}`);
