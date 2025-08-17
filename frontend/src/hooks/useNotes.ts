@@ -7,6 +7,7 @@ import {
   fetchNote
 } from '../api/notesApi';
 import type { Note } from '../types/types';
+import { hasNoteChanged } from '../utils/helpers';
 
 
 export const useNotes = () => {
@@ -41,20 +42,56 @@ export const useNotes = () => {
     }
   }, []);
 
-  const editNote = useCallback(async (id: string, updates: Partial<Note>) => {
-    setLoading(true);
-    try {
-      const updatedNote = await updateNote(id, updates);
-      setNotes(prev => 
-        prev.map(note => note._id === id ? updatedNote : note)
-      );
-      return updatedNote;
-    } catch (err) {
-      throw err;
-    } finally {
-      setLoading(false);
+ 
+
+const editNote = useCallback(async (id: string, updates: Partial<Note>) => {
+  // Check if note exists and if there are actual changes
+  const noteToUpdate = notes.find(note => note._id === id);
+  if (!noteToUpdate) {
+    throw new Error('Note not found');
+  }
+
+  // Check if the title is being changed to an existing title (excluding itself)
+  if (updates.title && updates.title !== noteToUpdate.title) {
+    const titleExists = notes.some(
+      note => note.title === updates.title && note._id !== id
+    );
+    if (titleExists) {
+      throw new Error('A note with this title already exists');
     }
-  }, []);
+  }
+
+  // Check if there are actual content changes
+  if (!hasNoteChanged(noteToUpdate, updates)) {
+    return noteToUpdate;
+  }
+
+  setLoading(true);
+  try {
+
+    setNotes(prev => prev.map(note => 
+      note._id === id ? { 
+        ...note, 
+        ...updates,
+        updatedAt: new Date().toISOString()
+      } : note
+    ));
+    
+    const updatedNote = await updateNote(id, updates);
+    
+  
+    setNotes(prev => prev.map(note => 
+      note._id === id ? updatedNote : note
+    ));
+    
+    return updatedNote;
+  } catch (err) {
+    setNotes(prev => [...prev]);
+    throw err;
+  } finally {
+    setLoading(false);
+  }
+}, [notes]);
 
   const removeNote = useCallback(async (id: string) => {
     setLoading(true);
