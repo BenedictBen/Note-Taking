@@ -16,7 +16,6 @@ export const formatDate = (dateString: string): string => {
 };
 
 
-
 /**
  * Validates note fields before submission
  * @param note - Partial note object
